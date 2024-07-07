@@ -1,12 +1,19 @@
+// Desc: This file contains the code for the Landing Page of the application
 import React from 'react';
-// ADD IMPORTS BACK FOR GRAPHS SECTION
+
+// Img and Assets Imports
 import GrantRatesByOfficeImg from '../../../styles/Images/bar-graph-no-text.png';
 import GrantRatesByNationalityImg from '../../../styles/Images/pie-chart-no-text.png';
 import GrantRatesOverTimeImg from '../../../styles/Images/line-graph-no-text.png';
 import HrfPhoto from '../../../styles/Images/paper-stack.jpg';
+
+// CSS Import
 import '../../../styles/RenderLandingPage.less';
+
+// External dependencies for UI components and routing
 import { Button } from 'antd';
 import { useHistory } from 'react-router-dom';
+
 // for the purposes of testing PageNav
 // import PageNav from '../../common/PageNav';
 
@@ -15,6 +22,23 @@ function RenderLandingPage(props) {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
   };
+
+  const handleDataDownload = () => {
+    // TODO: Implement data download functionality
+    console.log('Data download functionality not yet implemented');
+    // This might involve making an API call to get the data
+    // and then using the browser's download capabilities to save it
+  };
+
+  const DataActionButton = ({ onClick, children }) => (
+    <Button
+      type="default"
+      style={{ backgroundColor: '#404C4A', color: '#FFFFFF' }}
+      onClick={onClick}
+    >
+      {children}
+    </Button>
+  );
 
   const history = useHistory();
 
@@ -31,8 +55,6 @@ function RenderLandingPage(props) {
         </div>
       </div>
 
-      {/* Graphs Section: Add code here for the graphs section for your first ticket */}
-      {/* <div className="graphs-section"> */}
       <div className="graphs-section">
         <div className="graph-container">
           <img src={GrantRatesByOfficeImg} alt="Search Grant Rates By Office" />
@@ -51,14 +73,13 @@ function RenderLandingPage(props) {
         </div>
       </div>
 
-      <div className="view-more-data-btn-container">
-        <Button
-          type="default"
-          style={{ backgroundColor: '#404C4A', color: '#FFFFFF' }}
-          onClick={() => history.push('/graphs')}
-        >
+      <div className="data-action-buttons">
+        <DataActionButton onClick={() => history.push('/graphs')}>
           View the Data
-        </Button>
+        </DataActionButton>
+        <DataActionButton onClick={() => handleDataDownload()}>
+          Download the Data
+        </DataActionButton>
       </div>
 
       <div className="middle-section">
