@@ -30,11 +30,14 @@ function RenderLandingPage(props) {
     // and then using the browser's download capabilities to save it
   };
 
-  const DataActionButton = ({ onClick, children }) => (
+  const DataActionButton = ({ onClick, children, href }) => (
     <Button
       type="default"
       style={{ backgroundColor: '#404C4A', color: '#FFFFFF' }}
       onClick={onClick}
+      href={href}
+      target={href ? '_blank' : undefined}
+      rel={href ? 'noopener noreferrer' : undefined}
     >
       {children}
     </Button>
@@ -99,8 +102,6 @@ function RenderLandingPage(props) {
         </div>
       </div>
       <div>
-        {/* Bottom Section: Add code here for the graphs section for your first ticket */}
-        {/* <div className="bottom-section">*/}
         <div className="bottom-section">
           <h2>Systemic Disparity Insights</h2>
           <div className="insights-container">
@@ -118,23 +119,23 @@ function RenderLandingPage(props) {
                 The New York asylum office grant rate dropped to 5 percent in
                 fiscal year 2020.
               </p>
-              <div className="insight">
-                <h3>6x Lower</h3>
-                <p>
-                  Between fiscal year 2017 and 2020, the New York asylum
-                  office’s average grant rate was six times lower than the San
-                  Francisco asylum office.
-                </p>
-              </div>
             </div>
-            <button className="read-more-button" type="default">
-              Read More
-            </button>
+            <div className="insight">
+              <h3>6x Lower</h3>
+              <p>
+                Between fiscal year 2017 and 2020, the New York asylum office's
+                average grant rate was six times lower than the San Francisco
+                asylum office.
+              </p>
+            </div>
+          </div>
+          <DataActionButton href="https://humanrightsfirst.org/library/uscis-records-reveal-systemic-disparities-in-asylum-decisions/">
+            Read More
+          </DataActionButton>
+          <div className="back-to-top" onClick={scrollToTop}>
+            Back To Top ^
           </div>
         </div>
-        <p onClick={() => scrollToTop()} className="back-to-top">
-          Back To Top ^
-        </p>
       </div>
     </div>
   );
