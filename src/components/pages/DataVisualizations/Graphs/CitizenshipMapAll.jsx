@@ -115,8 +115,12 @@ function CitizenshipMapAll(props) {
       />
       <label htmlFor="regionSelect">Select another region below</label>
       <select name="regionSelect" onChange={handleScopeChange}>
-        {geoScopeArray.map(a => {
-          return <option value={a}>{a.toUpperCase()}</option>;
+        {geoScopeArray.map((a, index) => {
+          return (
+            <option value={a} key={index}>
+              {a.toUpperCase()}
+            </option>
+          );
         })}
       </select>
       <p>Table view</p>
