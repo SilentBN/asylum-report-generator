@@ -6,7 +6,7 @@ const rawApiDataToPlotlyReadyInfo = (view, office, data) => {
     'Houston, TX',
     'Chicago, IL',
     'Newark, NJ',
-    'Arlington, VA',
+  'Arlington, VA',
     'Boston, MA',
     'Miami, FL',
     'New Orleans, LA',

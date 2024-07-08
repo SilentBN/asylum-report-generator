@@ -16,6 +16,16 @@ import ScrollToTopOnMount from '../../../utils/scrollToTopOnMount';
 
 const { background_color } = colors;
 
+const transformCitizenshipSummary = data => {
+  return {
+    yearResults: [
+      {
+        yearData: data['countryGrantRateObj']['countriesPercentGranteds'],
+      },
+    ],
+  };
+};
+
 function GraphWrapper(props) {
   const { set_view, dispatch } = props;
   let { office, view } = useParams();
@@ -73,8 +83,10 @@ function GraphWrapper(props) {
         }
       })
       .catch(error => {
-        console.error('Error fetching data:', error);
-        // TODO: Implement user-facing error message
+        console.error(
+          'Unable to connect you account: Your results are not comming in. Please try again later.'
+        );
+        console.error(error);
       });
   }
 

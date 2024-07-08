@@ -10,6 +10,8 @@ import { rawApiDataToPlotlyReadyInfo, useInterval } from '../../../utils';
 import { connect } from 'react-redux';
 import { colors } from '../../../styles/data_vis_colors';
 
+import { transformCitizenshipSummary } from './Graphs/transformCitizenshipSummary';
+
 const { primary_accent_color } = colors;
 
 const mapStateToProps = (state, ownProps) => {
@@ -64,7 +66,9 @@ function YearLimitsSelect(props) {
   //     ));
   // };
   const stateSettingFn = (view, office, data) => {
-    const plotlyReadyData = rawApiDataToPlotlyReadyInfo(view, office, data);
+    const plotlyReadyData = data.totalCases
+      ? rawApiDataToPlotlyReadyInfo(view, office, data)
+      : transformCitizenshipSummary(data);
     dispatch(setVisualizationData(view, office, plotlyReadyData));
   };
   const [form] = Form.useForm();
