@@ -6,13 +6,37 @@ const rawApiDataToPlotlyReadyInfo = (view, office, data) => {
     'Houston, TX',
     'Chicago, IL',
     'Newark, NJ',
-  'Arlington, VA',
+    'Arlington, VA',
     'Boston, MA',
     'Miami, FL',
     'New Orleans, LA',
   ];
   let rowItem;
   let rowsForTable;
+
+  // NEW: Handle citizenship view at the beginning
+  if (view === 'citizenship') {
+    const dataToProcess = Array.isArray(data) ? data[0] : data;
+    const rowsForTable = dataToProcess.yearResults[0].yearData.map(item => ({
+      Citizenship: item.office,
+      'Total Cases': item.totalCases,
+      '% Granted': Number(item.granted).toFixed(2),
+      '% Admin Close / Dismissal': Number(item.adminClosed).toFixed(2),
+      '% Denied': Number(item.denied).toFixed(2),
+    }));
+
+    const countryGrantRateObj = {
+      countries: dataToProcess.yearResults[0].yearData.map(item => item.office),
+      countriesPercentGranteds: dataToProcess.yearResults[0].yearData.map(
+        item => item.granted
+      ),
+    };
+
+    return {
+      rowsForTable,
+      countryGrantRateObj,
+    };
+  }
 
   let yearMinMax = []; //variable to set minYear and MaxYear
   for (let yearResults of data[0]['yearResults']) {
@@ -153,32 +177,8 @@ const rawApiDataToPlotlyReadyInfo = (view, office, data) => {
         }
         return { officeHeatMapDataObject, rowsForTable };
 
-      case 'citizenship':
-        rowsForTable = [];
-        for (let item of data[0].citizenshipResults) {
-          rowItem = {
-            Citizenship: item.citizenship,
-            'Total Cases': item.totalCases,
-            '% Granted': Number(item.granted).toFixed(2),
-            '% Admin Close / Dismissal': Number(item.adminClosed).toFixed(2),
-            '% Denied': Number(item.denied).toFixed(2),
-          };
-          rowsForTable.push(rowItem);
-        }
-        const countryGrantRateObj = {
-          countries: [],
-          countriesPercentGranteds: [],
-        };
-        for (let country of data[0]['citizenshipResults']) {
-          countryGrantRateObj['countries'].push(country['citizenship']);
-          countryGrantRateObj['countriesPercentGranteds'].push(
-            country['granted']
-          );
-        }
-        return {
-          rowsForTable,
-          countryGrantRateObj,
-        };
+      // REMOVED: case 'citizenship': ... (This case is now handled at the beginning of the function)
+
       default:
         return {};
     }
@@ -214,32 +214,8 @@ const rawApiDataToPlotlyReadyInfo = (view, office, data) => {
           singleOfficeDataObject,
         };
 
-      case 'citizenship':
-        rowsForTable = [];
-        for (let item of data[0].citizenshipResults) {
-          rowItem = {
-            Citizenship: item.citizenship,
-            'Total Cases': item.totalCases,
-            '% Granted': Number(item.granted).toFixed(2),
-            '% Admin Close / Dismissal': Number(item.adminClosed).toFixed(2),
-            '% Denied': Number(item.denied).toFixed(2),
-          };
-          rowsForTable.push(rowItem);
-        }
-        const countryGrantRateObj = {
-          countries: [],
-          countriesPercentGranteds: [],
-        };
-        for (let country of data[0]['citizenshipResults']) {
-          countryGrantRateObj['countries'].push(country['citizenship']);
-          countryGrantRateObj['countriesPercentGranteds'].push(
-            country['granted']
-          );
-        }
-        return {
-          rowsForTable,
-          countryGrantRateObj,
-        };
+      // REMOVED: case 'citizenship': ... (This case is now handled at the beginning of the function)
+
       default:
         return {};
     }

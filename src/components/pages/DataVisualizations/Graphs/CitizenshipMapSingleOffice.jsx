@@ -110,7 +110,7 @@ function CitizenshipMapSingleOffice(props) {
       <label htmlFor="regionSelect">Select another region below</label>
       <select name="regionSelect" onChange={handleScopeChange}>
         {geoScopeArray.map((a, idx) => {
-          console.log('error message:', geoScopeArray);
+          // console.log('error message:', geoScopeArray);
           return (
             <option value={a} key={idx}>
               {a.toUpperCase()}

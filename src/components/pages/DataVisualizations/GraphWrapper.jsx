@@ -13,18 +13,9 @@ import { resetVisualizationQuery } from '../../../state/actionCreators';
 // import test_data from '../../../data/test_data.json';
 import { colors } from '../../../styles/data_vis_colors';
 import ScrollToTopOnMount from '../../../utils/scrollToTopOnMount';
+import { transformCitizenshipSummary } from '../DataVisualizations/Graphs/transformCitizenshipSummary';
 
 const { background_color } = colors;
-
-const transformCitizenshipSummary = data => {
-  return {
-    yearResults: [
-      {
-        yearData: data['countryGrantRateObj']['countriesPercentGranteds'],
-      },
-    ],
-  };
-};
 
 function GraphWrapper(props) {
   const { set_view, dispatch } = props;
@@ -74,8 +65,14 @@ function GraphWrapper(props) {
         },
       })
       .then(response => {
-        // Wrap the API response in an array to match the expected format
-        const formattedData = [response.data];
+        console.log('Raw API response:', response.data);
+        let formattedData;
+        if (view === 'citizenship') {
+          formattedData = transformCitizenshipSummary(response.data);
+          console.log('Formatted citizenship data:', formattedData);
+        } else {
+          formattedData = [response.data];
+        }
         if (typeof stateSettingCallback === 'function') {
           stateSettingCallback(view, office, formattedData);
         } else {
@@ -83,10 +80,7 @@ function GraphWrapper(props) {
         }
       })
       .catch(error => {
-        console.error(
-          'Unable to connect you account: Your results are not comming in. Please try again later.'
-        );
-        console.error(error);
+        console.error('Error fetching data:', error);
       });
   }
 
