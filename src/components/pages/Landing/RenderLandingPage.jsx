@@ -11,7 +11,7 @@ import HrfPhoto from '../../../styles/Images/paper-stack.jpg';
 import '../../../styles/RenderLandingPage.less';
 
 // External dependencies for UI components and routing
-import { Button } from 'antd';
+import { Button, message } from 'antd';
 import { useHistory } from 'react-router-dom';
 
 // for the purposes of testing PageNav
@@ -24,10 +24,29 @@ function RenderLandingPage(props) {
   };
 
   const handleDataDownload = () => {
-    // TODO: Implement data download functionality
-    console.log('Data download functionality not yet implemented');
-    // This might involve making an API call to get the data
-    // and then using the browser's download capabilities to save it
+    fetch('http://localhost:5000/api/download-csv')
+      .then(response => {
+        if (!response.ok) {
+          return response.json().then(err => {
+            throw new Error(err.message || 'Network response was not ok.');
+          });
+        }
+        return response.blob();
+      })
+      .then(blob => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+        a.download = 'COW2021001887-I589Data.csv';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+      })
+      .catch(error => {
+        console.error('Download failed:', error);
+        message.error(`Download failed: ${error.message}`);
+      });
   };
 
   const DataActionButton = ({ onClick, children, href }) => (
@@ -80,7 +99,7 @@ function RenderLandingPage(props) {
         <DataActionButton onClick={() => history.push('/graphs')}>
           View the Data
         </DataActionButton>
-        <DataActionButton onClick={() => handleDataDownload()}>
+        <DataActionButton onClick={handleDataDownload}>
           Download the Data
         </DataActionButton>
       </div>
