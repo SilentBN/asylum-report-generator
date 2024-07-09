@@ -7,7 +7,6 @@ import {
   Switch,
 } from 'react-router-dom';
 
-import { Auth0Provider } from '@auth0/auth0-react'; // Auth0
 import ProfilePage from './components/pages/Profile/ProfilePage'; // ProfilePage
 import Auth0ProviderWithHistory from './auth/auth0-provider-with-history';
 

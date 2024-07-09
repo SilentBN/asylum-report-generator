@@ -31,7 +31,7 @@ For a step-by-step guide on how to transition from React to Next.js, refer to: `
 2. Ensure that all existing functionality and components of the React app are working as expected after the migration.
 3. Maintain the integrity of the main files and ensure the application can be presented and demonstrated without issues.
 
-## Deliverables 
+## Deliverables
 
 Want us to review it? Post the following on labs-web:
 
