@@ -41,8 +41,8 @@ function SubFooter() {
     'About Us': `${base_url}/about`,
     'Contact Us': `${base_url}/about/contact`,
     Press: `${base_url}/press`,
-    'Terms & Privacy': `${base_url}/about/privacy-policy`,
-    'Sign Up': `${base_url}/sign-up`,
+    Donate: `${base_url}/donate`,
+    'Join the Work': `${base_url}/join-the-work`,
     Careers: `${base_url}/careers`,
   };
   return (
