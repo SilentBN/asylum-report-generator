@@ -9,6 +9,7 @@ import {
 
 import { Auth0Provider } from '@auth0/auth0-react'; // Auth0
 import ProfilePage from './components/pages/Profile/ProfilePage'; // ProfilePage
+import Auth0ProviderWithHistory from './auth/auth0-provider-with-history';
 
 import 'antd/dist/antd.less';
 import { NotFoundPage } from './components/pages/NotFound';
@@ -31,19 +32,15 @@ const { primary_accent_color } = colors;
 const store = configureStore({ reducer: reducer });
 
 ReactDOM.render(
-  <Auth0Provider
-    domain={process.env.REACT_APP_AUTH0_DOMAIN}
-    clientId={process.env.REACT_APP_AUTH0_CLIENT_ID}
-    redirectUri={window.location.origin}
-  >
-    <Router>
+  <Router>
+    <Auth0ProviderWithHistory>
       <Provider store={store}>
         <React.StrictMode>
           <App />
         </React.StrictMode>
       </Provider>
-    </Router>
-  </Auth0Provider>,
+    </Auth0ProviderWithHistory>
+  </Router>,
   document.getElementById('root')
 );
 
