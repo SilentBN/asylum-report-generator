@@ -18,17 +18,17 @@ https://bloomtechlabs.atlassian.net/browse/BL-637
 
 **_Please delete options that are not relevant._**
 
-- [ ] Bug fix (non-breaking change which fixes an issue)
-- [ ] New feature (non-breaking change which adds functionality)
-- [ ] This change requires a documentation update
+- [x] Bug fix (non-breaking change which fixes an issue)
+- [x] New feature (non-breaking change which adds functionality)
+- [x] This change requires a documentation update
 
 ## Checklist:
 
-- [ ] My code follows the style guidelines of this project
-- [ ] I have performed a self-review of my own code
-- [ ] I have removed unnecessary comments/console logs from my code
-- [ ] My changes generate no new warnings
-- [ ] I have checked my code and corrected any misspellings
-- [ ] No duplicate code left within changed files
-- [ ] Size of pull request kept to a minimum
-- [ ] Pull request description clearly describes changes made & motivations for said changes
+- [x] My code follows the style guidelines of this project
+- [x] I have performed a self-review of my own code
+- [x] I have removed unnecessary comments/console logs from my code
+- [x] My changes generate no new warnings
+- [x] I have checked my code and corrected any misspellings
+- [x] No duplicate code left within changed files
+- [x] Size of pull request kept to a minimum
+- [x] Pull request description clearly describes changes made & motivations for said changes
