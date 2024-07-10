@@ -1,28 +1,27 @@
 // Desc: This file contains the code for the Landing Page of the application
 import React from 'react';
 
-// Img and Assets Imports
+// Import image assets
 import GrantRatesByOfficeImg from '../../../styles/Images/bar-graph-no-text.png';
 import GrantRatesByNationalityImg from '../../../styles/Images/pie-chart-no-text.png';
 import GrantRatesOverTimeImg from '../../../styles/Images/line-graph-no-text.png';
 import HrfPhoto from '../../../styles/Images/paper-stack.jpg';
 
-// CSS Import
+// Import styles
 import '../../../styles/RenderLandingPage.less';
 
-// External dependencies for UI components and routing
+// Import UI components and routing
 import { Button, message } from 'antd';
 import { useHistory } from 'react-router-dom';
 
-// for the purposes of testing PageNav
-// import PageNav from '../../common/PageNav';
-
 function RenderLandingPage(props) {
+  // Function to scroll to the top of the page
   const scrollToTop = () => {
     document.body.scrollTop = 0;
     document.documentElement.scrollTop = 0;
   };
 
+  // Function to handle CSV data download
   const handleDataDownload = () => {
     fetch('http://localhost:5000/api/download-csv')
       .then(response => {
@@ -34,6 +33,7 @@ function RenderLandingPage(props) {
         return response.blob();
       })
       .then(blob => {
+        // Create a temporary URL for the blob and trigger download
         const url = window.URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.style.display = 'none';
@@ -49,6 +49,7 @@ function RenderLandingPage(props) {
       });
   };
 
+  // Reusable button component for data actions
   const DataActionButton = ({ onClick, children, href }) => (
     <Button
       type="default"
@@ -66,7 +67,9 @@ function RenderLandingPage(props) {
 
   return (
     <div className="main">
+      {/* Header section */}
       <div className="header">
+        {/* ... header content ... */}
         <div className="header-text-container">
           <h1>Asylum Office Grant Rate Tracker</h1>
           <h3>
@@ -77,8 +80,10 @@ function RenderLandingPage(props) {
         </div>
       </div>
 
+      {/* Graphs section */}
       <div className="graphs-section">
         <div className="graph-container">
+          {/* ... graph containers ... */}
           <img src={GrantRatesByOfficeImg} alt="Search Grant Rates By Office" />
           <p>Search Grant Rates By Office</p>
         </div>
@@ -95,6 +100,7 @@ function RenderLandingPage(props) {
         </div>
       </div>
 
+      {/* Data action buttons */}
       <div className="data-action-buttons">
         <DataActionButton onClick={() => history.push('/graphs')}>
           View the Data
@@ -104,7 +110,9 @@ function RenderLandingPage(props) {
         </DataActionButton>
       </div>
 
+      {/* Middle section with HRF information */}
       <div className="middle-section">
+        {/* ... HRF image and text ... */}
         <div className="hrf-img-container">
           <img src={HrfPhoto} alt="Human Rights First" className="hrf-img" />
         </div>
@@ -120,10 +128,13 @@ function RenderLandingPage(props) {
           </h3>
         </div>
       </div>
+
+      {/* Bottom section with insights */}
       <div>
         <div className="bottom-section">
           <h2>Systemic Disparity Insights</h2>
           <div className="insights-container">
+            {/* ... insight boxes ... */}
             <div className="insight">
               <h3>36%</h3>
               <p>
