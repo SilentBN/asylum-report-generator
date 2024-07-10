@@ -6,6 +6,7 @@ import { colors } from '../../../../styles/data_vis_colors';
 
 const { background_color } = colors;
 
+// Redux state mapping
 const mapStateToProps = (state, ownProps) => {
   const { office } = ownProps;
   return {
@@ -15,12 +16,15 @@ const mapStateToProps = (state, ownProps) => {
 
 function CitizenshipMapSingleOffice(props) {
   const { office, citizenshipMapData } = props;
+  // State for storing processed data for Plotly graph
   const [plotlyGraphAxis, setPlotlyGraphAxis] = useState({
     locationsAndText: [],
     z: [],
   });
+  // State for storing data to be displayed in the table
   const [rowsForTable, setRowsForTable] = useState([]);
 
+  // Effect to update state when citizenshipMapData changes
   useEffect(() => {
     if (citizenshipMapData['countryGrantRateObj'] !== undefined) {
       setPlotlyGraphAxis({
@@ -39,6 +43,8 @@ function CitizenshipMapSingleOffice(props) {
       setRowsForTable(citizenshipMapData.rowsForTable);
     }
   }, [citizenshipMapData]);
+
+  // Available geographic scopes for the map
   const geoScopeArray = [
     'world',
     'europe',
@@ -48,11 +54,15 @@ function CitizenshipMapSingleOffice(props) {
     'south america',
   ];
   const [geoScope, setGeoScope] = useState('world');
+
+  // Handler for changing the geographic scope of the map
   const handleScopeChange = e => {
     //update Plotly region based on dropdown selection
     const { value } = e.target;
     setGeoScope(value);
   };
+
+  // Column definitions for the table
   const columnsForTable = [
     'Citizenship',
     'Total Cases',
@@ -75,6 +85,8 @@ function CitizenshipMapSingleOffice(props) {
         Showing: Rates of 'granted' case decision by nationality of origin, for{' '}
         {office}
       </p>
+
+      {/* Render Plotly choropleth map */}
       <Plot
         data={[
           {
@@ -107,10 +119,11 @@ function CitizenshipMapSingleOffice(props) {
         }}
         style={{ width: '100%', fontWeight: '900' }}
       />
+
+      {/* Dropdown for selecting map region */}
       <label htmlFor="regionSelect">Select another region below</label>
       <select name="regionSelect" onChange={handleScopeChange}>
         {geoScopeArray.map((a, idx) => {
-          // console.log('error message:', geoScopeArray);
           return (
             <option value={a} key={idx}>
               {a.toUpperCase()}
@@ -118,6 +131,8 @@ function CitizenshipMapSingleOffice(props) {
           );
         })}
       </select>
+
+      {/* Render table with citizenship data */}
       <p>Table view</p>
       <Table
         rows={rowsForTable}

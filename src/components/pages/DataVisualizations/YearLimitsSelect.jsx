@@ -1,19 +1,16 @@
 import React, { useEffect } from 'react';
-import { Form, Button /*Input*/ } from 'antd';
-import {
-  setVisualizationData,
-  // setHeatMapYears,
-} from '../../../state/actionCreators';
-// import YearLimitsSlider from './YearLimitsSlider';
+import { Form, Button } from 'antd';
+import { setVisualizationData } from '../../../state/actionCreators';
 import { rawApiDataToPlotlyReadyInfo, useInterval } from '../../../utils';
-
 import { connect } from 'react-redux';
 import { colors } from '../../../styles/data_vis_colors';
 
 const { primary_accent_color } = colors;
 
+// Maps Redux state to component props based on current view and office
 const mapStateToProps = (state, ownProps) => {
   const { view, office } = ownProps;
+  // ... (logic to determine which years to use based on view and office)
   if (office === 'all' || !office) {
     switch (view) {
       case 'time-series':
@@ -54,20 +51,15 @@ const mapStateToProps = (state, ownProps) => {
 function YearLimitsSelect(props) {
   let { view, office, dispatch, clearQuery, updateStateWithNewData, years } =
     props;
-  // const yearInputsOnChange = (view, office, e) => {
-  //   dispatch(
-  //     setHeatMapYears(
-  //       view,
-  //       office,
-  //       e.target.id.includes('year_start') ? 0 : 1,
-  //       e.target.value
-  //     ));
-  // };
+
+  // Callback function to update Redux state with new visualization data
   const stateSettingFn = (view, office, data) => {
     const plotlyReadyData = rawApiDataToPlotlyReadyInfo(view, office, data);
     dispatch(setVisualizationData(view, office, plotlyReadyData));
   };
   const [form] = Form.useForm();
+
+  // Periodically update form fields with current year values from Redux state
   useInterval(() => {
     form.setFieldsValue({
       year_start: years[0],
@@ -75,6 +67,7 @@ function YearLimitsSelect(props) {
     });
   }, 10);
 
+  // Fetch new data when component mounts or updates
   useEffect(() => {
     updateStateWithNewData(years, view, office, stateSettingFn);
   });
@@ -88,13 +81,6 @@ function YearLimitsSelect(props) {
         minHeight: '50px',
       }}
     >
-      {/* <YearLimitsSlider
-        office={office}
-        view={view}
-        lowerLimit={2015}
-        upperLimit={2022}
-        step={1}
-      /> */}
       <Form
         form={form}
         name="yearLimitsSelect"
@@ -111,52 +97,7 @@ function YearLimitsSelect(props) {
           // alignItems: 'center',
         }}
       >
-        {/* <Form.Item
-          label="From:"
-          name="year_start"
-          rules={[
-            { required: true },
-            // {
-            //   validator: (_, value) => {
-            //     return value &&
-            //       parseInt(value) === value &&
-            //       value >= 2015 &&
-            //       value <= 2022
-            //       ? Promise.resolve()
-            //       : Promise.reject(
-            //           'Please enter a year between 2015 and 2022.'
-            //         );
-            //   },
-            // },
-          ]}
-          onChange={e => yearInputsOnChange(view, office, e)}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          label="To:"
-          name="year_end"
-          style={{ marginLeft: '17px' }}
-          rules={[
-            { required: true },
-            // {
-            //   validator: (_, value) => {
-            //     return value &&
-            //       parseInt(value) === value &&
-            //       value >= 2015 &&
-            //       value <= 2022 &&
-            //       value > form.getFieldValue('year_start')
-            //       ? Promise.resolve()
-            //       : Promise.reject(
-            //           "Please enter a year between 2015 and 2022, and after the 'From:' year."
-            //         );
-            //   },
-            // },
-          ]}
-          onChange={e => yearInputsOnChange(view, office, e)}
-        >
-          <Input />
-        </Form.Item> */}
+        {/* Update Query button */}
         <Form.Item>
           <Button
             htmlType="submit"
@@ -172,6 +113,8 @@ function YearLimitsSelect(props) {
           </Button>
         </Form.Item>
       </Form>
+
+      {/* Clear Query button */}
       <Button
         style={{
           width: '122px', // this is to match the width of the Form.Item button

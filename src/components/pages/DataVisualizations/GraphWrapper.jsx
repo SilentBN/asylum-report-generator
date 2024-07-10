@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { useParams } from 'react-router-dom';
+
+// Import various graph components
 import CitizenshipMapAll from './Graphs/CitizenshipMapAll';
 import CitizenshipMapSingleOffice from './Graphs/CitizenshipMapSingleOffice';
 import TimeSeriesAll from './Graphs/TimeSeriesAll';
@@ -10,22 +12,27 @@ import YearLimitsSelect from './YearLimitsSelect';
 import ViewSelect from './ViewSelect';
 import axios from 'axios';
 import { resetVisualizationQuery } from '../../../state/actionCreators';
-// import test_data from '../../../data/test_data.json';
 import { colors } from '../../../styles/data_vis_colors';
 import ScrollToTopOnMount from '../../../utils/scrollToTopOnMount';
 import { transformCitizenshipSummary } from '../DataVisualizations/Graphs/transformCitizenshipSummary';
 
 const { background_color } = colors;
 
+// Main component for wrapping and managing different graph views
 function GraphWrapper(props) {
   const { set_view, dispatch } = props;
   let { office, view } = useParams();
+
+  // Set default view if not provided
   if (!view) {
     set_view('time-series');
     view = 'time-series';
   }
+
+  // Determine which graph component to render based on office and view
   let map_to_render;
   if (!office) {
+    // ... (switch statement for rendering all offices view)
     switch (view) {
       case 'time-series':
         map_to_render = <TimeSeriesAll />;
@@ -40,6 +47,7 @@ function GraphWrapper(props) {
         break;
     }
   } else {
+    // ... (switch statement for rendering single office view)
     switch (view) {
       case 'time-series':
         map_to_render = <TimeSeriesSingleOffice office={office} />;
@@ -51,6 +59,8 @@ function GraphWrapper(props) {
         break;
     }
   }
+
+  // Function to fetch data from API and update state
   function updateStateWithNewData(years, view, office, stateSettingCallback) {
     const apiBaseURL = 'https://hrf-asylum-be-b.herokuapp.com/cases';
     const endpoint =
@@ -65,11 +75,10 @@ function GraphWrapper(props) {
         },
       })
       .then(response => {
-        console.log('Raw API response:', response.data);
+        // ... (data processing and state update logic)
         let formattedData;
         if (view === 'citizenship') {
           formattedData = transformCitizenshipSummary(response.data);
-          console.log('Formatted citizenship data:', formattedData);
         } else {
           formattedData = [response.data];
         }
@@ -84,6 +93,7 @@ function GraphWrapper(props) {
       });
   }
 
+  // Function to clear the current query
   const clearQuery = (view, office) => {
     dispatch(resetVisualizationQuery(view, office));
   };
