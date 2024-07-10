@@ -188,8 +188,6 @@ const rawApiDataToPlotlyReadyInfo = (view, office, data) => {
         }
         return { officeHeatMapDataObject, rowsForTable };
 
-      // REMOVED: case 'citizenship': ... (This case is now handled at the beginning of the function)
-
       default:
         return {};
     }
