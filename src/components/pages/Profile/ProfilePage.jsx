@@ -6,16 +6,20 @@ import { UserOutlined } from '@ant-design/icons';
 const { Title, Paragraph } = Typography;
 
 const ProfilePage = () => {
+  // Get user data and authentication status from Auth0
   const { user, isAuthenticated, isLoading } = useAuth0();
 
+  // Show loading spinner while auth state is being determined
   if (isLoading) {
     return <Spin size="large" />;
   }
 
+  // Show message if user is not authenticated
   if (!isAuthenticated) {
     return <Paragraph>Please log in to view your profile.</Paragraph>;
   }
 
+  // Render profile information for authenticated users
   return (
     <Row justify="center" style={{ padding: '2rem' }}>
       <Col xs={24} sm={20} md={16} lg={12}>
@@ -34,6 +38,8 @@ const ProfilePage = () => {
               <Paragraph type="secondary">{user.email}</Paragraph>
             </Col>
           </Row>
+
+          {/* Detailed user information */}
           <Descriptions
             title="User Information"
             layout="vertical"

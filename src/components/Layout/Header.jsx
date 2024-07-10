@@ -10,8 +10,10 @@ import { useAuth0 } from '@auth0/auth0-react';
 const { primary_accent_color } = colors;
 
 function HeaderContent() {
+  // Get authentication status from Auth0
   const { isAuthenticated } = useAuth0();
 
+  // Styles for navigation links
   const linkStyle = {
     color: '#E2F0F7',
     marginRight: '20px',
@@ -27,11 +29,14 @@ function HeaderContent() {
         backgroundColor: primary_accent_color,
       }}
     >
+      {/* Logo linking to HRF website */}
       <div className="hrf-logo">
         <a href="https://www.humanrightsfirst.org/">
           <Image width={100} src={Logo} preview={false} alt="HRF logo white" />
         </a>
       </div>
+
+      {/* Navigation links and authentication buttons */}
       <div style={{ display: 'flex', alignItems: 'center' }}>
         <Link to="/" style={linkStyle}>
           Home
@@ -39,11 +44,15 @@ function HeaderContent() {
         <Link to="/graphs" style={linkStyle}>
           Graphs
         </Link>
+
+        {/* Conditional rendering of Profile link based on authentication status */}
         {isAuthenticated && (
           <Link to="/profile" style={linkStyle}>
             Profile
           </Link>
         )}
+
+        {/* Render LogoutButton if authenticated, otherwise LoginButton */}
         {isAuthenticated ? (
           <LogoutButton style={linkStyle} />
         ) : (

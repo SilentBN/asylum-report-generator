@@ -1,4 +1,6 @@
+// Function to transform raw API data into a format suitable for Plotly visualizations
 const rawApiDataToPlotlyReadyInfo = (view, office, data) => {
+  // List of office names for reference
   const officeNames = [
     'Los Angeles, CA',
     'San Francisco, CA',
@@ -14,9 +16,11 @@ const rawApiDataToPlotlyReadyInfo = (view, office, data) => {
   let rowItem;
   let rowsForTable;
 
-  // NEW: Handle citizenship view at the beginning
+  // Handle citizenship view separately
   if (view === 'citizenship') {
+    // Process citizenship data
     const dataToProcess = Array.isArray(data) ? data[0] : data;
+    // Create rows for table display
     const rowsForTable = dataToProcess.yearResults[0].yearData.map(item => ({
       Citizenship: item.office,
       'Total Cases': item.totalCases,
@@ -25,6 +29,7 @@ const rawApiDataToPlotlyReadyInfo = (view, office, data) => {
       '% Denied': Number(item.denied).toFixed(2),
     }));
 
+    // Create data object for choropleth map
     const countryGrantRateObj = {
       countries: dataToProcess.yearResults[0].yearData.map(item => item.office),
       countriesPercentGranteds: dataToProcess.yearResults[0].yearData.map(
@@ -38,12 +43,15 @@ const rawApiDataToPlotlyReadyInfo = (view, office, data) => {
     };
   }
 
+  // Process data for other views (time-series and office-heat-map)
   let yearMinMax = []; //variable to set minYear and MaxYear
   for (let yearResults of data[0]['yearResults']) {
     yearMinMax.push(yearResults['fiscal_year']);
   }
 
+  // Create object to store grant rates by year and office
   const yearByOfficeByGrant = {}; //Object that contacts year by Office by grant rate information
+  // ... (rest of the data processing logic)
   for (let office of data[0]['yearResults']) {
     if (!yearByOfficeByGrant[office['fiscal_year']])
       yearByOfficeByGrant[office['fiscal_year']] = {}; //if year not existing set to empty object
@@ -83,9 +91,11 @@ const rawApiDataToPlotlyReadyInfo = (view, office, data) => {
     }
   }
 
+  // Handle different views for all offices or a specific office
   if (!office || office === 'all') {
     switch (view) {
       case 'time-series':
+        // Process data for time series view
         const rowsForAllDisplay = [];
         for (let yearResults of data[0].yearResults) {
           rowItem = {
@@ -118,6 +128,7 @@ const rawApiDataToPlotlyReadyInfo = (view, office, data) => {
         return { ...finalData, rowsForAllDisplay, officeData };
 
       case 'office-heat-map':
+        // Process data for office heat map view
         rowsForTable = [];
         for (let yearResults of data[0].yearResults) {
           for (let officeKey of officeNames) {
@@ -183,6 +194,7 @@ const rawApiDataToPlotlyReadyInfo = (view, office, data) => {
         return {};
     }
   } else {
+    // Handle single office views
     switch (view) {
       case 'time-series':
         rowsForTable = [];
@@ -213,9 +225,6 @@ const rawApiDataToPlotlyReadyInfo = (view, office, data) => {
           rowsForTable,
           singleOfficeDataObject,
         };
-
-      // REMOVED: case 'citizenship': ... (This case is now handled at the beginning of the function)
-
       default:
         return {};
     }

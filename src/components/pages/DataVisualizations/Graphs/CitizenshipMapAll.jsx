@@ -6,6 +6,7 @@ import { colors } from '../../../../styles/data_vis_colors';
 
 const { background_color, secondary_accent_color } = colors;
 
+// Map Redux state to component props
 const mapStateToProps = state => {
   return {
     citizenshipMapAllData: state.vizReducer.citizenshipMapAllData,
@@ -14,12 +15,15 @@ const mapStateToProps = state => {
 
 function CitizenshipMapAll(props) {
   const { citizenshipMapAllData } = props;
+  // State for choropleth map data
   const [plotlyGraphAxis, setPlotlyGraphAxis] = useState({
     locationsAndText: [],
     z: [],
   });
+  // State for table data
   const [rowsForTable, setRowsForTable] = useState([]);
 
+  // Update local state when Redux state changes
   useEffect(() => {
     if (citizenshipMapAllData['countryGrantRateObj'] !== undefined) {
       setPlotlyGraphAxis({
@@ -39,6 +43,7 @@ function CitizenshipMapAll(props) {
     }
   }, [citizenshipMapAllData]);
 
+  // Available geographic scopes for the map
   const geoScopeArray = [
     'world',
     'europe',
@@ -48,12 +53,15 @@ function CitizenshipMapAll(props) {
     'south america',
   ];
   const [geoScope, setGeoScope] = useState('world');
+
+  // Handle change in map scope
   const handleScopeChange = e => {
     //update Plotly region based on dropdown selection
     const { value } = e.target;
     setGeoScope(value);
   };
 
+  // Column definitions for the table
   const columnsForTable = [
     'Citizenship',
     'Total Cases',
@@ -77,6 +85,8 @@ function CitizenshipMapAll(props) {
         Showing: Rates of 'granted' case decision by nationality of origin, for
         all offices
       </p>
+
+      {/* Render Plotly choropleth map */}
       <Plot
         data={[
           {
@@ -113,6 +123,8 @@ function CitizenshipMapAll(props) {
           backgroundColor: background_color,
         }}
       />
+
+      {/* Dropdown for selecting map region */}
       <label htmlFor="regionSelect">Select another region below</label>
       <select name="regionSelect" onChange={handleScopeChange}>
         {geoScopeArray.map((a, index) => {
@@ -123,6 +135,8 @@ function CitizenshipMapAll(props) {
           );
         })}
       </select>
+
+      {/* Render table with citizenship data */}
       <p>Table view</p>
       <Table
         bordered={true}
